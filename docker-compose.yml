@@ -1,0 +1,37 @@
+---
+services:
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.stack.network=traefik"  
+
+        - "traefik.http.routers.calibre.rule=Host(`calibre.hartig.es`)"
+        - "traefik.http.routers.calibre.entrypoints=https"
+        - "traefik.http.routers.calibre.tls=true"
+
+        - "traefik.http.services.calibre.loadbalancer.server.port=8083"
+
+        
+        - "traefik.constraint=proxy-public"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    networks:
+      - traefik
+    volumes:
+      - config:/config
+      - /home/docker/mnt/fast/calibre_data:/books
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  config:
