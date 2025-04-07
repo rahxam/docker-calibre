@@ -9,15 +9,15 @@ services:
         - "traefik.enable=true"
         - "traefik.stack.network=traefik"  
 
-        - "traefik.http.routers.calibre.rule=Host(`calibre.hartig.es`)"
-        - "traefik.http.routers.calibre.entrypoints=https"
-        - "traefik.http.routers.calibre.tls=true"
+        - "traefik.http.routers.calibre-web.rule=Host(`calibre-web.hartig.es`)"
+        - "traefik.http.routers.calibre-web.entrypoints=https"
+        - "traefik.http.routers.calibre-web.tls=true"
 
-        - "traefik.http.services.calibre.loadbalancer.server.port=8083"
+        - "traefik.http.services.calibre-web.loadbalancer.server.port=8083"
 
         - "traefik.constraint=proxy-public"
         
-        - "traefik.http.routers.calibre.middlewares=authentik@swarm"
+        - "traefik.http.routers.calibre-web.middlewares=authentik@swarm"
     environment:
       - PUID=1000
       - PGID=1000
@@ -29,6 +29,37 @@ services:
     volumes:
       - config:/config
       - /home/docker/mnt/fast/calibre_data:/books
+
+  calibre:
+    image: lscr.io/linuxserver/calibre:latest
+    networks:
+      - traefik
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.stack.network=traefik"  
+
+        - "traefik.http.routers.calibre.rule=Host(`calibre.hartig.es`)"
+        - "traefik.http.routers.calibre.entrypoints=https"
+        - "traefik.http.routers.calibre.tls=true"
+
+        - "traefik.http.services.calibre.loadbalancer.server.port=8080"
+
+        - "traefik.constraint=proxy-public"
+        
+        - "traefik.http.routers.calibre.middlewares=authentik@swarm"
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - PASSWORD= #optional
+      - CLI_ARGS= #optional
+    volumes:
+      - /home/docker/mnt/fast/calibre_data::/config
 
 networks:
   traefik:
