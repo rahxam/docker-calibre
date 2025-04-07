@@ -17,7 +17,7 @@ services:
 
         - "traefik.constraint=proxy-public"
         
-        - "traefik.http.routers.pihole.middlewares=authentik@swarm"
+        - "traefik.http.routers.calibre.middlewares=authentik@swarm"
     environment:
       - PUID=1000
       - PGID=1000
