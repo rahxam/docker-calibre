@@ -59,7 +59,7 @@ services:
       - PASSWORD= #optional
       - CLI_ARGS= #optional
     volumes:
-      - /home/docker/mnt/fast/calibre_data::/config
+      - /home/docker/mnt/fast/calibre_data:/config
 
 networks:
   traefik:
