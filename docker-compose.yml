@@ -28,7 +28,7 @@ services:
       - traefik
     volumes:
       - config:/config
-      - /home/docker/mnt/fast/calibre_data:/books
+      - /home/docker/mnt/slow/calibre_data:/books
 
   calibre:
     image: lscr.io/linuxserver/calibre:latest
@@ -59,8 +59,10 @@ services:
       - PASSWORD= #optional
       - CLI_ARGS= #optional
     volumes:
-      - /home/docker/mnt/fast/calibre_data:/config
-      - /home/docker/mnt/fast/jdownloader:/jdownloader
+      - /home/docker/mnt/slow/calibre_data:/config
+      - /home/docker/mnt/slow/downloads/jdownloader:/jdownloader
+      - /home/docker/mnt/slow/media:/media
+      - /home/docker/mnt/slow/downloads:/downloads
 
 networks:
   traefik:
