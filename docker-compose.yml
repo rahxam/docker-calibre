@@ -63,7 +63,7 @@ services:
       - /home/docker/mnt/slow/downloads/jdownloader:/jdownloader
       - /home/docker/mnt/slow/media:/media
       - /home/docker/mnt/slow/downloads:/downloads
-      - /home/docker/mnt/slow/calibre_temp:/tmp
+      # - /home/docker/mnt/slow/calibre_temp:/tmp
 
 networks:
   traefik:
